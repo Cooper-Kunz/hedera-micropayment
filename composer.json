@@ -1,0 +1,8 @@
+{
+    "require-dev": {
+        "phpunit/phpunit": "^7.3.0"
+    },
+    "require": {
+        "paragonie/halite": "^4"
+    }
+}

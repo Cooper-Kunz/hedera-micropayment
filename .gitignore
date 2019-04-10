@@ -1,0 +1,10 @@
+# ignore Composer downloads
+/vendor/*
+
+# e2e output folder
+e2e_output/
+
+# test data folder
+!e2e/data/*.js.sample
+!data/*.js.sample
+e2e/data/login.js

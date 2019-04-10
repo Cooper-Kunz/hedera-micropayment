@@ -1,0 +1,57 @@
+.input_fields_wrap .add_field_button {
+    width: 60px;
+    height: 25px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #2EE59D;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+}
+
+.input_fields_wrap .add_field_button:hover {
+    background-color: #2EE59D;
+    color: #00A800;
+}
+
+.input_fields_wrap .remove_field {
+    padding-left: 26px;
+    padding-right: 27px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #D8D8D8;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+}
+
+.input_fields_wrap .remove_field:hover {
+    background-color: #FF001F;
+    color: #fff;
+}
+
+span {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.input_fields_wrap .appended_div {
+    margin-right: 5px;
+}
