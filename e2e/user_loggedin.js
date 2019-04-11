@@ -29,16 +29,14 @@ module.exports = {
         .pause(1000)
         .refresh()
         .pause(1000)
-        .waitForElementVisible('body')
+        .waitForElementVisible('body', 10000)
         .execute(function() {
-            let els = document.getElementsByTagName('hedera-micropayment')
-            // this.assert.ok(els[0].getAttribute('data-contentid'), 1)
-            for (var i=0; i<els.length; i++) {
-                if (i === 0) {
-                    console.log("els", els[i])
-                    this.assert.ok(els[i].getAttribute('data-contentid'), 1)
-                }
-            }
+            browser.pause(10000)
+            let blah = document.getElementsByTagName('hedera-micropayment')
+            console.log("111", blah)
+            console.log("222", blah[0])
+            console.log("333", blah[0].dataset.paymentserver)
+            this.assert.ok(blah[0].dataset.extensionid, 'ligpaondaabclfigagcifobaelemiena')
         })
         .pause(1000)
         .waitForElementVisible('body')

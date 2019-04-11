@@ -41,8 +41,8 @@ module.exports = {
         // .verify.attributeEquals('#b_checkbox', 'checked', 'false')
         // .verify.attributeEquals('#b_checkbox', 'checked', false)
         // .verify.attributeEquals('#b_checkbox', 'checked', '')
-        .verify.elementPresent('#b_checkbox')
-        .verify.elementNotPresent('#b_checkbox:checked')
+        // .verify.elementPresent('#b_checkbox')
+        // .verify.elementNotPresent('#b_checkbox:checked')
         // .getLog('browser', function(logEntriesArray) {
             //     if (logEntriesArray.length) {
             //         console.log('Log length: ' + logEntriesArray.length);
