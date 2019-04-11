@@ -9,10 +9,10 @@ module.exports = {
         .setValue('input[type=text]', data.username)
         .setValue('input[type=password]', data.password)
         .click('input[name=wp-submit]')
-        .pause(1000)
+        .pause(500)
         .waitForElementVisible('body')
         .click('li#menu-settings')
-        .pause(1000)
+        .pause(500)
         .execute(function() {
             var els = document.getElementsByTagName("a");
             for (var i = 0, l = els.length; i < l; i++) {
@@ -24,7 +24,7 @@ module.exports = {
             }
         })
         .waitForElementVisible('body')
-        .pause(1000)
+        .pause(500)
         .getTitle(function (title) {
             this.assert.ok(title.includes("Hedera Micropayment Settings"));
         })
@@ -38,28 +38,27 @@ module.exports = {
         })
         // input fields and save
         .setValue('input[name=hedera_micropayment_free]', '3')
-        .pause(1000)
+        .pause(500)
         .setValue('input[name=hedera_micropayment_extension_id]', 'ligpaondaabclfigagcifobaelemiena')
-        .pause(1000)
+        .pause(500)
         .setValue('input[name=hedera_micropayment_type]', 'article')
-        .pause(1000)
-        .setValue('input[name=hedera_micropayment_payment_server', 'http://localhost:8099')
+        .pause(500)
+        .setValue('input[name=hedera_micropayment_payment_server]', 'http://localhost:8099')
         // .assert.urlContains( '8099' )
-        .pause(1000)
+        .pause(500)
         .execute(function() {
-            // set the values of recipient list
-            let els = document.getElementsByClassName('input_fields_wrap')
-            for (var i=0; i<els.length; i++) {
-                var accSubStr = '[account]'
-                var amtSubStr = '[amount]'
-                if (els[i].nodeName.indexOf(accSubStr) !== -1) {
-                    // if class name of i is account
-                    // .setValue('hedera_micropayment_recipient[0][amount]', 333)
-                    // .setValue('hedera_micropayment_recipient[0][account]', 0.0.9)
-                }
-                // else class name of i is amount
+            var blah = document.querySelectorAll('input[name^=hedera_micropayment_recipient]')
+            for (var i = 0; i < blah.length; i++) {
+              if (i%2) {
+                //amount
+                blah[i].value = `${(i+1)*100 + (i+1)*10 + (i+1)}`
+            } else {
+              //account
+              blah[i].value = '0.0.'+(i+1)+''
+              }
             }
         })
+        .pause(2000)
         .click('#submit')
         .end();
     }

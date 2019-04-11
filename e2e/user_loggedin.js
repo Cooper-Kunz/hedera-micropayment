@@ -30,17 +30,11 @@ module.exports = {
         .refresh()
         .pause(1000)
         .waitForElementVisible('body')
-        // to do check if micropayment tag appears
-        // .useCss()
-        // .element('css selector', 'hedera-micropayment', function(result) {
-        //     console.log("result value", result)
-        //     // console.log("result value", result.getAttribute('data-contentid'))
-        //     // this.assert.equal(result['data-contentid'], 1);
-        //   })
         .execute(function() {
             let els = document.getElementsByTagName('hedera-micropayment')
+            // this.assert.ok(els[0].getAttribute('data-contentid'), 1)
             for (var i=0; i<els.length; i++) {
-                if (i === 1) {
+                if (i === 0) {
                     console.log("els", els[i])
                     this.assert.ok(els[i].getAttribute('data-contentid'), 1)
                 }

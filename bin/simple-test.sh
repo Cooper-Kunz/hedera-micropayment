@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-cp -r ../../../../demo-wordpress/ ../../../../demo-wordpress-e2e-test-db/
+cp -r ../../../../demo-wordpress/ ../../../../demo-wordpress-e2e/
 
-replace 'hedera_wordpress_demo' 'e2e-test-db' -- ../../../../demo-wordpress-e2e-test-db//wp-config.php
-replace 'hedera_wordpress_user' 'e2e-test-db-user' -- ../../../../demo-wordpress-e2e-test-db//wp-config.php
-replace 'localhost' 'localhost:8081' -- ../../../../demo-wordpress-e2e-test-db//wp-config.php
+replace 'hedera_wordpress_demo' 'hedera_wordpress_e2e_db' -- ../../../../demo-wordpress-e2e/wp-config.php
+replace 'hedera_wordpress_user' 'hedera_wordpress_e2e_user' -- ../../../../demo-wordpress-e2e/wp-config.php
+replace 'localhost' 'localhost:8081' -- ../../../../demo-wordpress-e2e/wp-config.php
 
 if [ $# -lt 3 ]; then
 	echo "usage: $0 <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]"
