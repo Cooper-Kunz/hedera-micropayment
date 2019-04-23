@@ -128,6 +128,7 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . '_recipient', array( $this, $this->option_name . '_recipient_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_amount', array( $this, $this->option_name . '_amount_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_payment_server_pub', array( $this, $this->option_name . '_sanitize' ));
 
 
     // constants
