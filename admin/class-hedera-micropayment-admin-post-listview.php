@@ -27,7 +27,7 @@ class HederaMicropaymentAdminPostListview {
     $name = $this->option_name . '_checkbox_value';
     $checkbox_value = ( isset( $meta[$name][0] ) &&  '1' === $meta[$name][0] ) ? 1 : 0;    
     if ($column == 'micropayment'){
-      echo '<input type="checkbox" name="'. $name .'['. $post_id .']" value="1"' . checked($checkbox_value, 1, false) . '>';
+      echo '<input type="checkbox" name="'. $name .'['. $post_id .']" value=1' . checked($checkbox_value, 1, false) . '>';
     }
   }
 
