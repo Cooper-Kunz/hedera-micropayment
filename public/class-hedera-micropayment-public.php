@@ -108,6 +108,7 @@ class HederaMicropaymentPublic {
     $payment_server = get_option($this->option_name . '_payment_server');
     $extension_id = get_option($this->option_name . '_extension_id');
     $memo = $anon_id . ',' . $post_id;
+    $type = get_option($this->option_name . '_type');
     $time = (new DateTime())->getTimestamp();
     if ($override) {
       $recipientList = $this->retrieve_recipients($post_id);
@@ -122,6 +123,7 @@ class HederaMicropaymentPublic {
     data-paymentserver='" . $payment_server . "',
     data-recipientlist='" . $recipientList . "',
     data-contentid='" . $post_id . "',
+    data-type='" . $type . "',
     data-memo='" . $memo . "',
     data-extensionid='" . $extension_id . "',
     data-time='" . $time . "',
@@ -192,7 +194,7 @@ class HederaMicropaymentPublic {
      // that publisher consumes micropayment
     $current_url = home_url(add_query_arg(array($_GET), $wp->request));
     if (is_home($current_url)) {
-      var_dump("homeOrFrontPage", is_home($current_url));
+      // var_dump("homeOrFrontPage", is_home($current_url));
       $submission_node = $this->get_random_node();
       $payment_server = get_option($this->option_name . '_payment_server');
       $extension_id = get_option($this->option_name . '_extension_id');
