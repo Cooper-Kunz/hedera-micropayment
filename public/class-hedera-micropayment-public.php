@@ -159,6 +159,8 @@ class HederaMicropaymentPublic {
 
   public function micropayment_tag( $content ) {
     global $wpdb;
+    global $wp;
+
     $anon_id = $_GET[NAME_ANON_ID];
     if (!empty($anon_id) && is_singular('post')) {
       $post_id = get_the_ID();
@@ -182,9 +184,32 @@ class HederaMicropaymentPublic {
             $content = 'sorry, you need to make payment';
           }
         }
-
         return $hederaMicropayment.$content;
       }
+    }
+
+     // if user is on home page
+    $current_url = home_url(add_query_arg(array($_GET), $wp->request));
+    if (is_home($current_url)) {
+      var_dump("homeOrFrontPage", is_home($current_url));
+      $submission_node = $this->get_random_node();
+      $payment_server = get_option($this->option_name . '_payment_server');
+      $extension_id = get_option($this->option_name . '_extension_id');
+      $memo = $anon_id . ',' . $post_id;
+      $time = (new DateTime())->getTimestamp();
+      $recipientList = $this->retrieve_recipients();
+  
+      // note that we do not use camelCase for data attributes because all browsers automatically
+      // switch data attributes to lowercase.
+      return "<hedera-micropayment
+      data-submissionnode='" . $submission_node . "',
+      data-paymentserver='" . $payment_server . "',
+      data-recipientlist='" . $recipientList . "',
+      data-type=maximum
+      data-memo='" . $memo . "'
+      data-extensionid='" . $extension_id . "',
+      data-time='" . $time . "',
+      ></hedera-micropayment>";    
     }
     return $content;
   }
@@ -193,6 +218,19 @@ class HederaMicropaymentPublic {
     $vars[] = $this->anon_id;
     return $vars;
   }
+
+  //   /**
+  //  * Are we currently on the front page?
+  //  *
+  //  * @param WP_Query $query Query instance.
+  //  * @return bool
+  //  */
+  // public function is_showing_page_on_front( $query ) {
+  //   var_dump(" 11111    ", $query->is_home());
+  //   var_dump(" 22222    ", 'page' === get_option( 'show_on_front' ));
+  //   // return $query->is_home() && 'page' === get_option( 'show_on_front' );
+  //   return $query->is_home();
+  // }
   
   public function pre_get_posts( $query ) {
     // check if the user is requesting an admin page 
@@ -205,7 +243,6 @@ class HederaMicropaymentPublic {
     if (empty($anon_id)) {
       global $wp;
       $current_url = home_url(add_query_arg(array($_GET), $wp->request));
-
       if (is_home($current_url)) {
         $new_anon_id = $this->create_anon_user();
         $new_url = home_url(add_query_arg(array( $this->anon_id_name => $new_anon_id ), $wp->request));
