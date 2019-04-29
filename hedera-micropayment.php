@@ -6,7 +6,7 @@
 /*
 Plugin Name: Hedera Micropayment
 Plugin URI: https://hedera.com
-Description: Hedera Micropayment wordpress plugin allows any publisher to turn their wordpress site to accept micropayments with Hedera distributed ledger.
+Description: Integrate micropayments into your Word Press website. The Hedera Word Press Plugin allows publishers to set prices for their content, denominated in hbar. Users who have a Hedera Browser Extension installed on their Chrome Browser will be able to pay per article in real time.
 Version: 0.9.0
 Author: Hedera Hashgraph LLC, Calvin Cheng, Serene Lim
 Author URI: https://github.com/hashgraph
