@@ -109,8 +109,18 @@ class HederaMicropaymentAdmin {
     $this->plugin_name,
     $this->option_name . '_general',
     array( 'label_for' => $this->option_name . '_type' )
-  );
+    );
   
+    // micropayment redirect url
+    add_settings_field(
+    $this->option_name . '_redirect_url',
+    __( 'Redirect URL', $this->plugin_name ),
+    array( $this, $this->option_name . '_redirect_url_cb' ),
+    $this->plugin_name,
+    $this->option_name . '_general',
+    array( 'label_for' => $this->option_name . '_redirect_url' )
+    );
+
     // micropayment recipientList
     add_settings_field(
       $this->option_name . '_recipient',
@@ -129,7 +139,7 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . '_amount', array( $this, $this->option_name . '_amount_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server_pub', array( $this, $this->option_name . '_sanitize' ));
-
+    register_setting( $this->plugin_name, $this->option_name . '_redirect_url', array( $this, $this->option_name . '_sanitize' ));
 
     // constants
     define('MICROPAYMENT_SERVER', '_micropayment_server');
@@ -200,6 +210,11 @@ class HederaMicropaymentAdmin {
   public function hedera_micropayment_type_cb() {
     $type = get_option($this->option_name . '_type');
     echo '<input type="text" name="' . $this->option_name . '_type' . '" id="' . $this->option_name . '_type' . '" value="' . $type .'" size="35"> </br><span>Extension message types, ie. "maximum", "402", "article",<span/>';
+  }
+
+  public function hedera_micropayment_redirect_url_cb() {
+    $redirect_url = get_option($this->option_name . '_redirect_url');
+    echo '<input type="text" name="' . $this->option_name . '_redirect_url' . '" id="' . $this->option_name . '_redirect_url' . '" value="' . $redirect_url .'" size="35"> </br><span>Redirect url path when payment fails to block content<span/>';
   }
 
   public function hedera_micropayment_recipient_cb() {
