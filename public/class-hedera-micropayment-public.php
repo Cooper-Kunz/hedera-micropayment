@@ -188,7 +188,8 @@ class HederaMicropaymentPublic {
       }
     }
 
-     // if user is on home page
+     // if user is on home page, make sure data-type is maximum, no crypto transfer, but an alert to user
+     // that publisher consumes micropayment
     $current_url = home_url(add_query_arg(array($_GET), $wp->request));
     if (is_home($current_url)) {
       var_dump("homeOrFrontPage", is_home($current_url));
