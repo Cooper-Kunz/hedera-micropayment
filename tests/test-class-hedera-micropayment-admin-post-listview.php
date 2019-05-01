@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class HederaMicropaymentAdminPostListviewTest
+ *
+ * @package HederaMicropayment
+ */
 class HederaMicropaymentAdminPostListviewTest extends WP_UnitTestCase {
 
   public function test_manage_posts() {

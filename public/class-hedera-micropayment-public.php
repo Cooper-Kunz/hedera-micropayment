@@ -35,6 +35,11 @@ class HederaMicropaymentPublic {
     ));
   }
 
+  /**
+   * Create and associate a anonymous id user to a nonce
+   * @access private
+   * @return array
+   */
   private function anon_id_nonce( $anon_id ) {
     $nonce = wp_create_nonce($anon_id);
     global $wpdb;
@@ -48,6 +53,10 @@ class HederaMicropaymentPublic {
     );
   }
 
+  /**
+   * Associates a logged-in wp user with anonymous user
+   * @access private
+   */
   private function associate_wp_user_id_with_anon_id( $anon_id ) {
     if(is_user_logged_in()) {
       $current_user = wp_get_current_user();
@@ -60,6 +69,10 @@ class HederaMicropaymentPublic {
     }
   }
   
+  /**
+   * Get list of recipients from publisher's setting, to be placed in hedera-micropayment tag
+   * @access private
+   */
   private function retrieve_recipients($post_id = 0) {
     $name = $this->option_name . '_recipient';
     if ($post_id > 0) {
@@ -103,6 +116,11 @@ class HederaMicropaymentPublic {
     return array_values($value);
   }
 
+  /**
+	 * Assembles hedera-micropayment tag.
+   * @access private
+   * @return string a hedera-micropayment tag to be inserted into DOM with hedera-micropayment tag enabled
+	 */
   private function assemble_hedera_micropayment_tag($anon_id, $override, $post_id) {
     $submission_node = $this->get_random_node();
     $payment_server = get_option($this->option_name . '_payment_server');
@@ -159,6 +177,9 @@ class HederaMicropaymentPublic {
     return $meta[$name][0];
   }
 
+  /**
+   * If micropayment tag is enabled on post, show micropayment tag on DOM
+   */
   public function micropayment_tag( $content ) {
     global $wpdb;
     global $wp;
@@ -221,19 +242,6 @@ class HederaMicropaymentPublic {
     $vars[] = $this->anon_id;
     return $vars;
   }
-
-  //   /**
-  //  * Are we currently on the front page?
-  //  *
-  //  * @param WP_Query $query Query instance.
-  //  * @return bool
-  //  */
-  // public function is_showing_page_on_front( $query ) {
-  //   var_dump(" 11111    ", $query->is_home());
-  //   var_dump(" 22222    ", 'page' === get_option( 'show_on_front' ));
-  //   // return $query->is_home() && 'page' === get_option( 'show_on_front' );
-  //   return $query->is_home();
-  // }
   
   public function pre_get_posts( $query ) {
     // check if the user is requesting an admin page 
@@ -265,6 +273,9 @@ class HederaMicropaymentPublic {
     return $url;
   }
 
+  /**
+   * Create an anonymous user when user first lands on webpage
+   */
   private function create_anon_user() {
     global $wpdb;
     $free = get_option( $this->option_name . '_free');
@@ -273,6 +284,9 @@ class HederaMicropaymentPublic {
     return $wpdb->insert_id;
   }
 
+  /**
+   * Select a random hedera node from the address book to be placed in the hedera-micropayment tag
+   */
   private function get_random_node() {
     $env = getenv('WP_ENV');
     if ($env === false) {

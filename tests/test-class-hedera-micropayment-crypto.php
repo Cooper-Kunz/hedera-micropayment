@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class HederaMicropaymentCryptoTest
+ *
+ * @package HederaMicropayment
+ */
+
 class HederaMicropaymentCryptoTest extends WP_UnitTestCase {
   
   public function test_generate_key_pair() {
