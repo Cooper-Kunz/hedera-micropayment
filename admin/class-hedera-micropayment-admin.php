@@ -113,12 +113,12 @@ class HederaMicropaymentAdmin {
   
     // micropayment redirect url
     add_settings_field(
-    $this->option_name . '_redirect_url',
+    $this->option_name . '_redirect',
     __( 'Redirect URL', $this->plugin_name ),
-    array( $this, $this->option_name . '_redirect_url_cb' ),
+    array( $this, $this->option_name . '_redirect_cb' ),
     $this->plugin_name,
     $this->option_name . '_general',
-    array( 'label_for' => $this->option_name . '_redirect_url' )
+    array( 'label_for' => $this->option_name . '_redirect' )
     );
 
     // micropayment recipientList
@@ -139,7 +139,7 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . '_amount', array( $this, $this->option_name . '_amount_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server_pub', array( $this, $this->option_name . '_sanitize' ));
-    register_setting( $this->plugin_name, $this->option_name . '_redirect_url', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_redirect', array( $this, $this->option_name . '_sanitize' ));
 
     // constants
     define('MICROPAYMENT_SERVER', '_micropayment_server');
@@ -209,12 +209,12 @@ class HederaMicropaymentAdmin {
 
   public function hedera_micropayment_type_cb() {
     $type = get_option($this->option_name . '_type');
-    echo '<input type="text" name="' . $this->option_name . '_type' . '" id="' . $this->option_name . '_type' . '" value="' . $type .'" size="35"> </br><span>Extension message types, ie. "maximum", "402", "article",<span/>';
+    echo '<input type="text" name="' . $this->option_name . '_type' . '" id="' . $this->option_name . '_type' . '" value="' . $type .'" size="35"> </br><span>Extension message types, ie."article",<span/>';
   }
 
-  public function hedera_micropayment_redirect_url_cb() {
-    $redirect_url = get_option($this->option_name . '_redirect_url');
-    echo '<input type="text" name="' . $this->option_name . '_redirect_url' . '" id="' . $this->option_name . '_redirect_url' . '" value="' . $redirect_url .'" size="35"> </br><span>Redirect url path when payment fails to block content<span/>';
+  public function hedera_micropayment_redirect_cb() {
+    $redirect = get_option($this->option_name . '_redirect');
+    echo '<input type="text" name="' . $this->option_name . '_redirect' . '" id="' . $this->option_name . '_redirect' . '" value="' . $redirect .'" size="35"> </br><span>Redirect url path when payment fails to block content ie. "/paywall" <span/>';
   }
 
   public function hedera_micropayment_recipient_cb() {
