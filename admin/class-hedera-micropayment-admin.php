@@ -121,6 +121,36 @@ class HederaMicropaymentAdmin {
     array( 'label_for' => $this->option_name . '_redirect_non_paying_account' )
     );
 
+    // micropayment redirect_no_account url
+    add_settings_field(
+      $this->option_name . '_redirect_no_account',
+      __( 'Redirect no account URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_no_account_cb' ),
+      $this->plugin_name,
+      $this->option_name . '_general',
+      array( 'label_for' => $this->option_name . '_redirect_no_account' )
+    );
+
+    // micropayment redirect_homepage url
+    add_settings_field(
+      $this->option_name . '_redirect_homepage',
+      __( 'Redirect homepage URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_homepage_cb' ),
+      $this->plugin_name,
+      $this->option_name . '_general',
+      array( 'label_for' => $this->option_name . '_redirect_homepage' )
+    );
+
+    // micropayment redirect_no_extension url
+    add_settings_field(
+      $this->option_name . '_redirect_no_extension',
+      __( 'Redirect no extension URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_no_extension_cb' ),
+      $this->plugin_name,
+      $this->option_name . '_general',
+      array( 'label_for' => $this->option_name . '_redirect_no_extension' )
+    );
+
     // micropayment recipientList
     add_settings_field(
       $this->option_name . '_recipient',
@@ -140,6 +170,9 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . '_payment_server', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server_pub', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_redirect_non_paying_account', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_redirect_no_account', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_redirect_homepage', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_redirect_no_extension', array( $this, $this->option_name . '_sanitize' ));
 
     // constants
     define('MICROPAYMENT_SERVER', '_micropayment_server');
@@ -214,7 +247,22 @@ class HederaMicropaymentAdmin {
 
   public function hedera_micropayment_redirect_non_paying_account_cb() {
     $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
-    echo '<input type="text" name="' . $this->option_name . '_redirect_non_paying_account' . '" id="' . $this->option_name . '_redirect_non_paying_account' . '" value="' . $redirect_non_paying_account .'" size="35"> </br><span>Redirect non paying account url path when payment fails to block content ie. "/paywall" <span/>';
+    echo '<input type="text" name="' . $this->option_name . '_redirect_non_paying_account' . '" id="' . $this->option_name . '_redirect_non_paying_account' . '" value="' . $redirect_non_paying_account .'" size="35"> </br><span>Redirect non paying account url path when payment fails to block content ie. "/non-paying-account" <span/>';
+  }
+
+  public function hedera_micropayment_redirect_no_account_cb() {
+    $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
+    echo '<input type="text" name="' . $this->option_name . '_redirect_no_account' . '" id="' . $this->option_name . '_redirect_no_account' . '" value="' . $redirect_no_account .'" size="35"> </br><span>Redirect no account url path when payment fails to block content ie. "/no-account" <span/>';
+  }
+
+  public function hedera_micropayment_redirect_homepage_cb() {
+    $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
+    echo '<input type="text" name="' . $this->option_name . '_redirect_homepage' . '" id="' . $this->option_name . '_redirect_homepage' . '" value="' . $redirect_homepage .'" size="35"> </br><span>Redirect homepage url path when payment fails to block content ie. "/" <span/>';
+  }
+
+  public function hedera_micropayment_redirect_no_extension_cb() {
+    $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+    echo '<input type="text" name="' . $this->option_name . '_redirect_no_extension' . '" id="' . $this->option_name . '_redirect_no_extension' . '" value="' . $redirect_no_extension .'" size="35"> </br><span>Redirect no extension url path when payment fails to block content ie. "/no-extension" <span/>';
   }
 
   public function hedera_micropayment_recipient_cb() {
