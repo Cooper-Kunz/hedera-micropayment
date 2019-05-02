@@ -125,7 +125,12 @@ class HederaMicropaymentPublic {
     $submission_node = $this->get_random_node();
     $payment_server = get_option($this->option_name . '_payment_server');
     $extension_id = get_option($this->option_name . '_extension_id');
-    $redirect = get_option($this->option_name . '_redirect');
+
+    $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
+    $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
+    $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
+    $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+    
     $memo = $anon_id . ',' . $post_id;
     $type = get_option($this->option_name . '_type');
     $time = (new DateTime())->getTimestamp();
@@ -145,7 +150,7 @@ class HederaMicropaymentPublic {
     data-type='" . $type . "',
     data-memo='" . $memo . "',
     data-extensionid='" . $extension_id . "',
-    data-redirect='" . $redirect . "',
+    data-redirect='" . $redirect_non_paying_account +  $redirect_no_account + $redirect_homepage + $redirect_no_extension . "',
     data-time='" . $time . "',
     ></hedera-micropayment>";
   }
@@ -221,7 +226,11 @@ class HederaMicropaymentPublic {
       $submission_node = $this->get_random_node();
       $payment_server = get_option($this->option_name . '_payment_server');
       $extension_id = get_option($this->option_name . '_extension_id');
-      $redirect = get_option($this->option_name . '_redirect');
+      $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
+      $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
+      $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
+      $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+
       $memo = $anon_id . ',' . $post_id;
       $time = (new DateTime())->getTimestamp();
       $recipientList = $this->retrieve_recipients();
@@ -235,7 +244,7 @@ class HederaMicropaymentPublic {
       data-type=maximum
       data-memo='" . $memo . "'
       data-extensionid='" . $extension_id . "',
-      data-redirect='" . $redirect . "',
+      data-redirect='" . $redirect_non_paying_account +  $redirect_no_account + $redirect_homepage + $redirect_no_extension . "',
       data-time='" . $time . "',
       ></hedera-micropayment>";    
     }
