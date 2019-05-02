@@ -70,6 +70,20 @@ class HederaMicropaymentPublic {
   }
   
   /**
+   * Get customized URL fields from publisher's settings, consolidate into a single JSON
+   * to be placed in hedera-micropayment tag
+   * @access private
+   */
+  private function retrieve_customize_redirect() {
+    $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
+    $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
+    $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
+    $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+    $redirect = '{ "nonPayingAccount": "' . $redirect_non_paying_account .'", "noAccount": "' . $redirect_no_account . '", "homePage": "' . $redirect_homepage . '" }';
+    return $redirect;
+  }
+
+  /**
    * Get list of recipients from publisher's setting, to be placed in hedera-micropayment tag
    * @access private
    */
@@ -126,10 +140,7 @@ class HederaMicropaymentPublic {
     $payment_server = get_option($this->option_name . '_payment_server');
     $extension_id = get_option($this->option_name . '_extension_id');
 
-    $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
-    $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
-    $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
-    $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+    $redirect = $this->retrieve_customize_redirect();
     
     $memo = $anon_id . ',' . $post_id;
     $type = get_option($this->option_name . '_type');
@@ -150,7 +161,7 @@ class HederaMicropaymentPublic {
     data-type='" . $type . "',
     data-memo='" . $memo . "',
     data-extensionid='" . $extension_id . "',
-    data-redirect='" . $redirect_non_paying_account +  $redirect_no_account + $redirect_homepage + $redirect_no_extension . "',
+    data-redirect='" . $redirect . "',
     data-time='" . $time . "',
     ></hedera-micropayment>";
   }
@@ -226,10 +237,8 @@ class HederaMicropaymentPublic {
       $submission_node = $this->get_random_node();
       $payment_server = get_option($this->option_name . '_payment_server');
       $extension_id = get_option($this->option_name . '_extension_id');
-      $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
-      $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
-      $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
-      $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
+      
+      $redirect = $this->retrieve_customize_redirect();
 
       $memo = $anon_id . ',' . $post_id;
       $time = (new DateTime())->getTimestamp();
@@ -244,7 +253,7 @@ class HederaMicropaymentPublic {
       data-type=maximum
       data-memo='" . $memo . "'
       data-extensionid='" . $extension_id . "',
-      data-redirect='" . $redirect_non_paying_account +  $redirect_no_account + $redirect_homepage + $redirect_no_extension . "',
+      data-redirect='" . $redirect . "',
       data-time='" . $time . "',
       ></hedera-micropayment>";    
     }
