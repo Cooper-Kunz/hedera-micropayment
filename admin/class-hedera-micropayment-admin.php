@@ -110,46 +110,6 @@ class HederaMicropaymentAdmin {
     $this->option_name . '_general',
     array( 'label_for' => $this->option_name . '_type' )
     );
-  
-    // micropayment redirect_non_paying_account url
-    add_settings_field(
-    $this->option_name . '_redirect_non_paying_account',
-    __( 'Redirect non paying account URL', $this->plugin_name ),
-    array( $this, $this->option_name . '_redirect_non_paying_account_cb' ),
-    $this->plugin_name,
-    $this->option_name . '_general',
-    array( 'label_for' => $this->option_name . '_redirect_non_paying_account' )
-    );
-
-    // micropayment redirect_no_account url
-    add_settings_field(
-      $this->option_name . '_redirect_no_account',
-      __( 'Redirect no account URL', $this->plugin_name ),
-      array( $this, $this->option_name . '_redirect_no_account_cb' ),
-      $this->plugin_name,
-      $this->option_name . '_general',
-      array( 'label_for' => $this->option_name . '_redirect_no_account' )
-    );
-
-    // micropayment redirect_homepage url
-    add_settings_field(
-      $this->option_name . '_redirect_homepage',
-      __( 'Redirect homepage URL', $this->plugin_name ),
-      array( $this, $this->option_name . '_redirect_homepage_cb' ),
-      $this->plugin_name,
-      $this->option_name . '_general',
-      array( 'label_for' => $this->option_name . '_redirect_homepage' )
-    );
-
-    // micropayment redirect_no_extension url
-    add_settings_field(
-      $this->option_name . '_redirect_no_extension',
-      __( 'Redirect no extension URL', $this->plugin_name ),
-      array( $this, $this->option_name . '_redirect_no_extension_cb' ),
-      $this->plugin_name,
-      $this->option_name . '_general',
-      array( 'label_for' => $this->option_name . '_redirect_no_extension' )
-    );
 
     // micropayment recipientList
     add_settings_field(
@@ -209,6 +169,57 @@ class HederaMicropaymentAdmin {
 
     register_setting( $this->plugin_name, $this->option_name . MICROPAYMENT_SERVER_URL, array( $this, $this->option_name . '_sanitize' ) );
     register_setting( $this->plugin_name, $this->option_name . MICROPAYMENT_SERVER_PUB, array( $this, $this->option_name . '_sanitize' ) );
+
+    // constants
+    define('CUSTOMIZE_REDIRECT', '_customize_redirect');
+
+    // add a customize redirect section
+    add_settings_section(
+      $this->option_name . CUSTOMIZE_REDIRECT,
+      __('Customize Redirect URLs', $this->plugin_name),
+      array($this, $this->option_name . '_customize_redirect_cb'),
+      $this->plugin_name
+    );
+
+    // micropayment redirect_non_paying_account url
+    add_settings_field(
+    $this->option_name . '_redirect_non_paying_account',
+    __( 'Redirect non paying account URL', $this->plugin_name ),
+    array( $this, $this->option_name . '_redirect_non_paying_account_cb' ),
+    $this->plugin_name,
+    $this->option_name . CUSTOMIZE_REDIRECT,
+    array( 'label_for' => $this->option_name . '_redirect_non_paying_account' )
+    );
+
+    // micropayment redirect_no_account url
+    add_settings_field(
+      $this->option_name . '_redirect_no_account',
+      __( 'Redirect no account URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_no_account_cb' ),
+      $this->plugin_name,
+      $this->option_name . CUSTOMIZE_REDIRECT,
+      array( 'label_for' => $this->option_name . '_redirect_no_account' )
+    );
+
+    // micropayment redirect_homepage url
+    add_settings_field(
+      $this->option_name . '_redirect_homepage',
+      __( 'Redirect homepage URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_homepage_cb' ),
+      $this->plugin_name,
+      $this->option_name . CUSTOMIZE_REDIRECT,
+      array( 'label_for' => $this->option_name . '_redirect_homepage' )
+    );
+
+    // micropayment redirect_no_extension url
+    add_settings_field(
+      $this->option_name . '_redirect_no_extension',
+      __( 'Redirect no extension URL', $this->plugin_name ),
+      array( $this, $this->option_name . '_redirect_no_extension_cb' ),
+      $this->plugin_name,
+      $this->option_name . CUSTOMIZE_REDIRECT,
+      array( 'label_for' => $this->option_name . '_redirect_no_extension' )
+    );
   }
 
   public function hedera_micropayment_general_cb() {
@@ -288,6 +299,10 @@ class HederaMicropaymentAdmin {
 
   public function hedera_micropayment_micropayment_server_cb() {
     echo '<p>' . __('Specify the configuration details for our micropayment server', $this->plugin_name) . '</p>';
+  }
+
+  public function hedera_micropayment_customize_redirect_cb() {
+    echo '<p>' . __('Customize redirect URLs', $this->plugin_name) . '</p>';
   }
 
 }
