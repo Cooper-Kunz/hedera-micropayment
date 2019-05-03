@@ -62,6 +62,10 @@ class HederaMicropaymentCrypto {
     return Hex::decode($signature);
   }
 
+  public function decodeMessage($message) {
+    return new HiddenString($message);
+  }
+
   /**
    * @return string - hex-encoded public key from our database
    */

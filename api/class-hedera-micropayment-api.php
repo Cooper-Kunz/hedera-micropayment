@@ -82,11 +82,16 @@ class HederaMicropaymentAPI {
 
   public function rest_hello_cb( $request ) {
 
-    $msg = array('msg' => 'failed validation');
+    $msg = array('msg' => 'failed validation. invalid content type.');
     if (!$this->validate_content_type($request->get_headers()['content_type'])) {
       return json_encode($msg);
     }
-    if (!$this->validate_authorization($request->get_headers()['authorization'])) {
+
+    $body = $request->get_body();
+    $secret = $request->get_headers()['authorization'];
+
+    $msg = array('msg' => 'failed validation. invalid authorization.');
+    if (!$this->validate_authorization($secret, $body)) {
       return json_encode($msg);
     }
 
@@ -117,20 +122,42 @@ class HederaMicropaymentAPI {
 
   // Validate that our content-type is application/json
   private function validate_content_type($content_type) {
-    var_dump($content_type[0]);
-    if ($content_type[0] !== 'application/json') {
+    $content_type_header = $content_type[0];
+    $content_type_match = preg_match_all('/^application\/json/', $content_type_header);
+    if (!$content_type_match) {
       return false;
     } 
     return true;
   }
 
   // TODO: validate our authorization secret properly. If it does not validate, then, we must exit
-  private function validate_authorization($secret) {
-    var_dump($secret[0]);
-    if ($secret === '') {
-      return false;
+  private function validate_authorization($secret, $body) {
+    if (is_array($secret)) {
+      $authorization = $secret[0];
+      $pieces = explode(' ', $authorization);
+      $token = $pieces[1];
+      // authenticate against public key
+      $this->authenticate_public_key($token, $body);
+       return true;
     }
-    return true;
+    return false;
+  }
+
+  private function authenticate_public_key($token, $body) {
+    var_dump('token');
+    var_dump($token); // signature
+    var_dump('body');
+    var_dump($body);  // message
+    $crypto = new HederaMicropaymentCrypto($this->option_name, $this->version);
+    $public_hex = $crypto->getPublicKey();
+    var_dump($public_hex);
+
+
+    var_dump('#################################');
+    // var_dump($public);
+
+
+    // $crypto->verify($message, $public, $signature)
   }
 
 }
