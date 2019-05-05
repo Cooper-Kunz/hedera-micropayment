@@ -1,6 +1,5 @@
 <?php
 
-// use ParagonIE\Halite\KeyFactory;
 use ParagonIE\ConstantTime\Hex;
 use ParagonIE\HiddenString\HiddenString;
 use ParagonIE\Halite\Asymmetric\{
