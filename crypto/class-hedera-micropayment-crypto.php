@@ -28,8 +28,8 @@ class HederaMicropaymentCrypto {
     return KeyFactory::generateSignatureKeyPair();
   }
 
-  public function sign($message, $secret) {
-    return Asymmetric::sign($message, $secret);
+  public function sign($message, $secret, $binary = true) {
+    return Asymmetric::sign($message, $secret, $binary);
   }
 
   public function verify($message, $public, $signature) {
