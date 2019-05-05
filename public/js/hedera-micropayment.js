@@ -15,7 +15,9 @@
     console.log('hedera-browser-extension id:', hederaExtensionId);
 
     function notInstalledCallback() {
-      console.log('detect: user does not have extension installed');
+      console.log('detect: user does not have extension installed', window.location.href);
+      let downloadUrl = 'https://hedera.com';
+      setTimeout(function(){ window.location = downloadUrl; },3000);
     }
 
     function installedCallback() {

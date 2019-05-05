@@ -82,11 +82,15 @@ class HederaMicropaymentAPI {
 
   public function rest_hello_cb( $request ) {
 
-    $msg = array('msg' => 'failed validation');
+    $msg = array('msg' => 'failed validation. invalid content type.');
     if (!$this->validate_content_type($request->get_headers()['content_type'])) {
       return json_encode($msg);
     }
-    if (!$this->validate_authorization($request->get_headers()['authorization'])) {
+
+    $message = $request->get_body();
+    $authorization_header = $request->get_headers()['authorization'];
+    $msg = array('msg' => 'failed validation. invalid authorization.');
+    if (!$this->validate_authorization($message, $authorization_header)) {
       return json_encode($msg);
     }
 
@@ -106,8 +110,6 @@ class HederaMicropaymentAPI {
       }
     }
 
-    var_dump($fk_anon_id);
-    var_dump($record);
     global $wpdb;
     $table_name = $wpdb->prefix . 'hedera_micropayment_records';
     $wpdb->insert($table_name, $record);
@@ -117,20 +119,37 @@ class HederaMicropaymentAPI {
 
   // Validate that our content-type is application/json
   private function validate_content_type($content_type) {
-    var_dump($content_type[0]);
-    if ($content_type[0] !== 'application/json') {
+    $content_type_header = $content_type[0];
+    $content_type_match = preg_match_all('/^application\/json/', $content_type_header);
+    if (!$content_type_match) {
       return false;
     } 
     return true;
   }
 
-  // TODO: validate our authorization secret properly. If it does not validate, then, we must exit
-  private function validate_authorization($secret) {
-    var_dump($secret[0]);
-    if ($secret === '') {
-      return false;
+  // Authorization $secret contains our signature
+  private function validate_authorization($message, $authorization_header) {
+    if (is_array($authorization_header)) {
+      // extract the hex-encoded signature from our authorization header
+      $authorization = $authorization_header[0];
+      $pieces = explode(' ', $authorization);
+      $signature_hex = $pieces[1];
+      return $this->verify_message_with_signature($message, $signature_hex);
     }
-    return true;
+    return false;
+  }
+
+  // $message is the message (string), $token is the hex-encoded signature
+  private function verify_message_with_signature($message, $signature_hex) {
+    // recover the signature in bytes, from hex (as sent by Payment Server)
+    $signature = hex2bin($signature_hex);
+
+    // retrieve public key, from database
+    $crypto = new HederaMicropaymentCrypto($this->option_name, $this->version);
+    $public_hex = $crypto->getPublicKey();
+    $public = $crypto->decodePublic($public_hex);
+
+    return $crypto->verify($message, $public, $signature, true);
   }
 
 }
