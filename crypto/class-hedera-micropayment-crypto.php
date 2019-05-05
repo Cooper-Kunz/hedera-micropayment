@@ -1,12 +1,16 @@
 <?php
 
-use ParagonIE\Halite\KeyFactory;
+// use ParagonIE\Halite\KeyFactory;
 use ParagonIE\ConstantTime\Hex;
 use ParagonIE\HiddenString\HiddenString;
 use ParagonIE\Halite\Asymmetric\{
   Crypto as Asymmetric,
   SignatureSecretKey,
   SignaturePublicKey
+};
+use ParagonIE\Halite\{
+  KeyFactory,
+  Halite
 };
 
 class HederaMicropaymentCrypto {
@@ -28,12 +32,12 @@ class HederaMicropaymentCrypto {
     return KeyFactory::generateSignatureKeyPair();
   }
 
-  public function sign($message, $secret) {
-    return Asymmetric::sign($message, $secret);
+  public function sign($message, $secret, $encoding = Halite::ENCODE_BASE64URLSAFE) {
+    return Asymmetric::sign($message, $secret, $encoding);
   }
 
-  public function verify($message, $public, $signature) {
-    return Asymmetric::verify($message, $public, $signature);
+  public function verify($message, $public, $signature, $encoding = Halite::ENCODE_BASE64URLSAFE) {
+    return Asymmetric::verify($message, $public, $signature ,$encoding);
   }
 
   public function encodePublic($public) {
