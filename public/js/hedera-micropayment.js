@@ -13,11 +13,24 @@
 
     var hederaExtensionId = ajax_var.extension_id
     console.log('hedera-browser-extension id:', hederaExtensionId);
+    var redirectNoExtension = ajax_var.redirect_no_extension
+    console.log('redirectNoExtension:', redirectNoExtension);
 
     function notInstalledCallback() {
       console.log('detect: user does not have extension installed', window.location.href);
-      let downloadUrl = 'https://hedera.com';
-      setTimeout(function(){ window.location = downloadUrl; },3000);
+      var currentURL = new URL(window.location.href)
+      var currentParams = new URLSearchParams(currentURL.search)
+      var currentPath = currentURL.pathname
+      for(var key of currentParams.keys()) { 
+        if (key === 'page_id') {
+          currentPath = "/" + currentURL.search
+        }
+      }
+      if (currentPath !== redirectNoExtension) {
+        setTimeout(function() {
+          window.location = redirectNoExtension;
+        }, 3000)
+      }
     }
 
     function installedCallback() {
