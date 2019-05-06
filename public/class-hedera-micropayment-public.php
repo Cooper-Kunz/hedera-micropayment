@@ -27,11 +27,13 @@ class HederaMicropaymentPublic {
     $anon_id_nonce = $this->anon_id_nonce( $anon_id );
     $this->associate_wp_user_id_with_anon_id( $anon_id );
     $extension_id = get_option($this->option_name . '_extension_id');
+    $redirect_no_extension = get_option($this->option_name . '_redirect_no_extension');
     wp_localize_script( $this->plugin_name . '-public', 'ajax_var', array(
       'url' => home_url(),
       NAME_ANON_ID => $anon_id_nonce[NAME_ANON_ID],
       NAME_NONCE => $anon_id_nonce[NAME_NONCE],
-      'extension_id' => $extension_id
+      'extension_id' => $extension_id,
+      'redirect_no_extension' => $redirect_no_extension
     ));
   }
 
