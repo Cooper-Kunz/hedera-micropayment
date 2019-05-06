@@ -95,6 +95,8 @@ class HederaMicropaymentAPI {
     }
 
     $result = $request->get_json_params();
+    var_dump($result);
+    
     $record = $result;
     $record['transaction_id'] = $record['transactionId'];
     unset($record['transactionId']);
