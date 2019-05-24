@@ -72,6 +72,8 @@ class HederaMicropayment {
     $plugin_public = new HederaMicropaymentPublic( $this->get_plugin_name(), $this->get_version());
     // load our hedera-micropayment js
     $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+    // noscript rule
+    $this->loader->add_action('wp_head', $plugin_public, 'assemble_noscript_tag');
     // hedera-micropayment tag
     $this->loader->add_filter('the_content', $plugin_public, 'micropayment_tag');
     // register and track anon_id
