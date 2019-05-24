@@ -72,11 +72,11 @@ class HederaMicropaymentPublic {
   }
   
   /**
-   * Get customized URL fields from publisher's settings, consolidate into a single JSON
+   * Get Paywall settings fields from publisher's settings, consolidate into a single JSON
    * to be placed in hedera-micropayment tag
    * @access private
    */
-  private function retrieve_customize_redirect() {
+  private function retrieve_paywall_settings() {
     $redirect_non_paying_account = get_option($this->option_name . '_redirect_non_paying_account');
     $redirect_no_account = get_option($this->option_name . '_redirect_no_account');
     $redirect_homepage = get_option($this->option_name . '_redirect_homepage');
@@ -133,6 +133,32 @@ class HederaMicropaymentPublic {
   }
 
   /**
+   * Assembles no-script html in the DOM
+   * @access public
+   * @return string no script tag to be inserted into DOM if javascript is disabled
+   */
+  public function assemble_noscript_tag() {
+    $my_class_name = $this->retrieve_noscript_detection();
+    ?>
+    <noscript>
+      <h2> Javascript is disabled. Please enable Javascript to continue browsing</h2>
+      <style type='text/css'>
+        <?php echo $my_class_name; ?> {display:none;}
+      </style>
+    </noscript>
+    <?php 
+  }
+
+  private function retrieve_noscript_detection() {
+    $noscript_detection = get_option($this->option_name . '_noscript_detection');
+    if (empty($noscript_detection)) {
+      $noscript_detection = '#content'; // default css id that we impose, which is used by most themes
+    }
+    return $noscript_detection;
+  }
+
+
+  /**
 	 * Assembles hedera-micropayment tag.
    * @access private
    * @return string a hedera-micropayment tag to be inserted into DOM with hedera-micropayment tag enabled
@@ -142,7 +168,7 @@ class HederaMicropaymentPublic {
     $payment_server = get_option($this->option_name . '_payment_server');
     $extension_id = get_option($this->option_name . '_extension_id');
 
-    $redirect = $this->retrieve_customize_redirect();
+    $redirect = $this->retrieve_paywall_settings();
     
     $memo = $anon_id . ',' . $post_id;
     $type = get_option($this->option_name . '_type');
@@ -240,7 +266,7 @@ class HederaMicropaymentPublic {
       $payment_server = get_option($this->option_name . '_payment_server');
       $extension_id = get_option($this->option_name . '_extension_id');
       
-      $redirect = $this->retrieve_customize_redirect();
+      $redirect = $this->retrieve_paywall_settings();
 
       $memo = $anon_id . ',' . $post_id;
       $time = (new DateTime())->getTimestamp();

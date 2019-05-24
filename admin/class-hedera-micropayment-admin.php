@@ -129,6 +129,7 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . '_amount', array( $this, $this->option_name . '_amount_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_payment_server_pub', array( $this, $this->option_name . '_sanitize' ));
+    register_setting( $this->plugin_name, $this->option_name . '_noscript_detection', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_redirect_non_paying_account', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_redirect_no_account', array( $this, $this->option_name . '_sanitize' ));
     register_setting( $this->plugin_name, $this->option_name . '_redirect_homepage', array( $this, $this->option_name . '_sanitize' ));
@@ -171,23 +172,33 @@ class HederaMicropaymentAdmin {
     register_setting( $this->plugin_name, $this->option_name . MICROPAYMENT_SERVER_PUB, array( $this, $this->option_name . '_sanitize' ) );
 
     // constants
-    define('CUSTOMIZE_REDIRECT', '_customize_redirect');
+    define('PAYWALL_SETTINGS', '_paywall_settings');
 
-    // add a customize redirect section
+    // add a Paywall Settings section
     add_settings_section(
-      $this->option_name . CUSTOMIZE_REDIRECT,
-      __('Customize Redirect URLs', $this->plugin_name),
-      array($this, $this->option_name . '_customize_redirect_cb'),
+      $this->option_name . PAYWALL_SETTINGS,
+      __('Paywall Settings', $this->plugin_name),
+      array($this, $this->option_name . '_paywall_settings_cb'),
       $this->plugin_name
     );
 
+    // micropayment remove body content when noscript is detected
+    add_settings_field(
+    $this->option_name . '_noscript_detection',
+    __( 'Classname where main content body is in', $this->plugin_name ),
+    array( $this, $this->option_name . '_noscript_detection_cb' ),
+    $this->plugin_name,
+    $this->option_name . PAYWALL_SETTINGS,
+    array( 'label_for' => $this->option_name . '_noscript_detection' )
+    );
+        
     // micropayment redirect_non_paying_account url
     add_settings_field(
     $this->option_name . '_redirect_non_paying_account',
     __( 'Redirect non paying account URL', $this->plugin_name ),
     array( $this, $this->option_name . '_redirect_non_paying_account_cb' ),
     $this->plugin_name,
-    $this->option_name . CUSTOMIZE_REDIRECT,
+    $this->option_name . PAYWALL_SETTINGS,
     array( 'label_for' => $this->option_name . '_redirect_non_paying_account' )
     );
 
@@ -197,7 +208,7 @@ class HederaMicropaymentAdmin {
       __( 'Redirect no account URL', $this->plugin_name ),
       array( $this, $this->option_name . '_redirect_no_account_cb' ),
       $this->plugin_name,
-      $this->option_name . CUSTOMIZE_REDIRECT,
+      $this->option_name . PAYWALL_SETTINGS,
       array( 'label_for' => $this->option_name . '_redirect_no_account' )
     );
 
@@ -207,7 +218,7 @@ class HederaMicropaymentAdmin {
       __( 'Redirect homepage URL', $this->plugin_name ),
       array( $this, $this->option_name . '_redirect_homepage_cb' ),
       $this->plugin_name,
-      $this->option_name . CUSTOMIZE_REDIRECT,
+      $this->option_name . PAYWALL_SETTINGS,
       array( 'label_for' => $this->option_name . '_redirect_homepage' )
     );
 
@@ -217,7 +228,7 @@ class HederaMicropaymentAdmin {
       __( 'Redirect no extension URL', $this->plugin_name ),
       array( $this, $this->option_name . '_redirect_no_extension_cb' ),
       $this->plugin_name,
-      $this->option_name . CUSTOMIZE_REDIRECT,
+      $this->option_name . PAYWALL_SETTINGS,
       array( 'label_for' => $this->option_name . '_redirect_no_extension' )
     );
   }
@@ -254,6 +265,11 @@ class HederaMicropaymentAdmin {
   public function hedera_micropayment_type_cb() {
     $type = get_option($this->option_name . '_type');
     echo '<input type="text" name="' . $this->option_name . '_type' . '" id="' . $this->option_name . '_type' . '" value="' . $type .'" size="35"> </br><span>Extension message types, ie."article",<span/>';
+  }
+
+  public function hedera_micropayment_noscript_detection_cb() {
+    $_noscript_detection = get_option($this->option_name . '_noscript_detection');
+    echo '<input type="text" name="' . $this->option_name . '_noscript_detection' . '" id="' . $this->option_name . '_noscript_detection' . '" value="' . $_noscript_detection .'" size="35"> </br><span>Place your classname where main content resides in. Content will be removed when javascript is disabled on client`s browser. Default id is `#content`, which is used by most themes <span/>';
   }
 
   public function hedera_micropayment_redirect_non_paying_account_cb() {
@@ -301,8 +317,8 @@ class HederaMicropaymentAdmin {
     echo '<p>' . __('Specify the configuration details for our micropayment server', $this->plugin_name) . '</p>';
   }
 
-  public function hedera_micropayment_customize_redirect_cb() {
-    echo '<p>' . __('Customize redirect URLs', $this->plugin_name) . '</p>';
+  public function hedera_micropayment_paywall_settings_cb() {
+    echo '<p>' . __('Sets paywall configurations such as redirect URLs and noscript detection', $this->plugin_name) . '</p>';
   }
 
 }
