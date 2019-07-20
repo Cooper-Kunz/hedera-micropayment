@@ -26,7 +26,7 @@ Upon activation, the publisher can configure their default settings to collect t
 * Publisher can specify the payment settings globally.
 * Publisher can override payment settings on a specific post.
 
-**Live demo can be found over [here](https://wordpress.thetimesta.mp).**
+**Live demo can be found over [here](https://dailytimestamp.com).**
 
 ## Installation
 
